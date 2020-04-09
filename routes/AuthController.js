@@ -7,7 +7,7 @@ var VerifyToken = require('./VerifyToken');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 var User = require('./../models/User');
-
+var OperationalData = require('./../models/DataOperations');
 /**
  * Configure JWT
  */
@@ -44,6 +44,25 @@ router.post('/register', function(req, res) {
           email : req.body.email,
           password : req.body.password,
           phone : req.body.phone,
+        }, 
+        function (err, user) {
+          if (err) return res.status(500).send("There was a problem registering the user`.");
+
+          // if user is registered without errors
+          // create a token
+          var token = jwt.sign({ id: user._id }, config.secret, {
+            expiresIn: 86400 // expires in 24 hours
+          });
+
+          res.status(200).send({ auth: true, token: token });
+        });
+
+});
+router.post('/Operationadata', function(req, res) {
+
+        OperationalData.create({
+          ItemCode : req.body.code,
+          Heading : req.body.name,
         }, 
         function (err, user) {
           if (err) return res.status(500).send("There was a problem registering the user`.");
