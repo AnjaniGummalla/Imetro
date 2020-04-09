@@ -5,12 +5,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 //var indexRouter = require('./routes/index');
 var authRouter = require('./routes/AuthController');
+var OperationDataRouter = require('./routes/OperationDataController');
+var OperationDescriptionRouter = require('./routes/OperationDescriptionController');
 var app = express();
 
 //Databaseconnection
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/Imetroproject')
-    .then(()=>console.log("DB server connect"))
+    .then(()=>console.log("Database connection Success"))
     .catch(e => console.log("DB error", e));
 
 // view engine setup
@@ -23,9 +25,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/', indexRouter);
 app.use('/users', authRouter);
-
+app.use('/operation',OperationDataRouter);
+app.use('/description',OperationDescriptionRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
