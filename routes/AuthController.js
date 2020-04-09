@@ -98,7 +98,7 @@ router.put('edit/:id',VerifyToken, function (req, res) {
         });
 });
 
-router.get('/getlist/:id',VerifyToken, function (req, res) {
+router.get('/getlist',VerifyToken, function (req, res) {
         User.find({}, function (err, users) {
             if (err) return res.status(500).send("There was a problem finding the users.");
             res.status(200).send(users);
