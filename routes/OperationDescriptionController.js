@@ -19,9 +19,9 @@ var config = require('../config'); // get config file
 router.post('/create',VerifyToken, function(req, res) {
 
         OperationalDescription.create({
-          ItemCode : req.body.code,
+          ItemCode : mongoose.Types.ObjectId(req.body.code),
           Heading : req.body.name,
-          Description: req.body.desc,
+          Description: req.body.description,
           Explanation: req.body.explain,
           Unit: req.body.unit,
           Comprises:req.body.comprises,
@@ -34,7 +34,13 @@ router.post('/create',VerifyToken, function(req, res) {
         });
 
 });
-
+router.post('/getItem',VerifyToken, function (req, res) {
+        var Itemcode = req.body.ItemCode;
+        OperationalData.find({ItemCode:ItemCode}, function (err, Data) {
+            if (err) return res.status(500).send("There was a problem finding the Data.");
+            res.status(200).send(Data);
+        });
+});
 router.put('/edit/:id',VerifyToken, function (req, res) {
         OperationalDescription.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, Data) {
             if (err) return res.status(500).send("There was a problem updating the Data.");

@@ -29,7 +29,13 @@ router.post('/create',VerifyToken, function(req, res) {
         });
 
 });
-
+router.post('/getItem',VerifyToken, function (req, res) {
+        var Itemcode = req.body.ItemCode;
+        OperationalData.find({ItemCode:ItemCode}, function (err, Data) {
+            if (err) return res.status(500).send("There was a problem finding the Data.");
+            res.status(200).send(Data);
+        });
+});
 router.put('/edit/:id',VerifyToken, function (req, res) {
         OperationalData.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, Data) {
             if (err) return res.status(500).send("There was a problem updating the Data.");

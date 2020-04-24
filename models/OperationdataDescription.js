@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');  
 var DataOperationalDescriptionSchema = new mongoose.Schema({  
-  DataItem:{
-  	type:String,
-  	unique: true,
-  },
+  ItemCode: {  
+      type: Schema.Types.ObjectId,
+        ref: 'DataOperations',
+    },
   Heading: String,
   Description: String,
   Explanation: String,
